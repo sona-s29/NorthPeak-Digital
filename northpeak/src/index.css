@@ -12,6 +12,8 @@
   --ice-soft: #cfe3e6;
   --copper: #b5562e;
   --copper-dark: #8f4324;
+  --copper-readable: #7a381f;
+  --ice-readable: #526f77;
   --line: rgba(18, 24, 31, 0.14);
   --line-on-dark: rgba(247, 247, 244, 0.18);
 
@@ -35,11 +37,9 @@ html { scroll-behavior: smooth; }
 
 @keyframes rise-in {
   from {
-    opacity: 0;
     transform: translateY(18px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -139,10 +139,11 @@ em { font-style: italic; color: var(--copper); }
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--copper-readable);
   margin: 0 0 14px;
 }
-.section-dark .eyebrow { color: var(--ice); }
+.hero .eyebrow,
+.section-dark .eyebrow { color: var(--ice-soft); }
 
 /* ==========================================================================
    Header
@@ -185,10 +186,39 @@ em { font-style: italic; color: var(--copper); }
   font-size: 0.92rem;
   font-weight: 500;
 }
+.menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+.menu-toggle span {
+  width: 19px;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
 .site-nav a:not(.nav-cta) { color: var(--slate); }
 .site-nav a:not(.nav-cta):hover { color: var(--ink); }
 .site-nav a:not(.nav-cta).is-active {
-  color: var(--copper);
+  color: var(--copper-readable);
   position: relative;
 }
 .site-nav a:not(.nav-cta).is-active::after {
@@ -198,7 +228,7 @@ em { font-style: italic; color: var(--copper); }
   right: 0;
   bottom: -8px;
   height: 2px;
-  background: var(--copper);
+  background: var(--copper-readable);
 }
 .nav-cta {
   background: var(--ink);
@@ -294,7 +324,6 @@ em { font-style: italic; color: var(--copper); }
 .hero h1,
 .hero-sub,
 .hero-actions {
-  opacity: 0;
   animation: rise-in 0.7s ease-out forwards;
 }
 .hero .eyebrow { animation-delay: 0.12s; }
@@ -357,13 +386,13 @@ em { font-style: italic; color: var(--copper); }
 .waypoint {
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  color: var(--ice);
+  color: var(--ice-readable);
   display: block;
   margin-bottom: 14px;
   transition: transform 0.18s ease, color 0.18s ease;
 }
 .card-service:hover .waypoint {
-  color: var(--copper);
+  color: var(--copper-readable);
   transform: translateX(4px);
 }
 .card-service h3 { font-size: 1.15rem; margin-bottom: 10px; }
@@ -439,7 +468,7 @@ em { font-style: italic; color: var(--copper); }
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: #e0a083;
   position: absolute;
   top: 20px;
   right: 28px;
@@ -547,13 +576,41 @@ em { font-style: italic; color: var(--copper); }
 }
 
 @media (max-width: 639px) {
-  .site-nav { gap: 14px; font-size: 0.82rem; }
+  .site-header { position: sticky; }
+  .header-inner { position: relative; }
+  .menu-toggle { display: inline-flex; }
+  .site-nav {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    top: calc(100% + 10px);
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 42px rgba(18, 24, 31, 0.16);
+    font-size: 0.95rem;
+  }
+  .site-nav.is-open { display: flex; }
+  .site-nav a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 10px 12px;
+  }
+  .site-nav a:not(.nav-cta).is-active::after { display: none; }
   .header-inner { height: 60px; }
-  .nav-cta { padding: 8px 12px; }
+  .nav-cta {
+    margin-top: 6px;
+    justify-content: center;
+    padding: 10px 12px;
+  }
 }
 
 @media (max-width: 479px) {
-  .site-nav a:not(.nav-cta) { display: none; }
   .brand span { font-size: 0.98rem; }
   .wrap { padding: 0 18px; }
   .hero { padding: 72px 0 84px; }

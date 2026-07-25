@@ -5,6 +5,7 @@ import { navLinks } from "../data";
 export default function Header() {
   // "top" covers the hero, before any tracked section has scrolled into view.
   const [activeSection, setActiveSection] = useState("top");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const sectionIds = ["top", ...navLinks.map((link) => link.id), "contact"];
@@ -39,22 +40,59 @@ export default function Header() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileMenuOpen]);
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   return (
     <header className="site-header">
       <div className="wrap header-inner">
-        <a href="#top" className="brand" aria-label="NorthPeak Digital home">
+        <a
+          href="#top"
+          className="brand"
+          aria-label="NorthPeak Digital home"
+          onClick={closeMobileMenu}
+        >
           <BrandMark />
           <span>
             NorthPeak <em>Digital</em>
           </span>
         </a>
-        <nav className="site-nav" aria-label="Primary">
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-controls="primary-navigation"
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+        <nav
+          className={"site-nav" + (mobileMenuOpen ? " is-open" : "")}
+          id="primary-navigation"
+          aria-label="Primary"
+        >
           {navLinks.map((link) => (
             <a
               key={link.id}
               href={`#${link.id}`}
               aria-current={activeSection === link.id ? "page" : undefined}
               className={activeSection === link.id ? "is-active" : undefined}
+              onClick={closeMobileMenu}
             >
               {link.label}
             </a>
@@ -65,6 +103,7 @@ export default function Header() {
               "nav-cta" + (activeSection === "contact" ? " is-active" : "")
             }
             aria-current={activeSection === "contact" ? "page" : undefined}
+            onClick={closeMobileMenu}
           >
             Start the climb
           </a>
