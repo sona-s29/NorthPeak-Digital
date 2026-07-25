@@ -47,3 +47,18 @@ npm run build
 ```
 
 The production bundle is generated in `dist/`.
+
+## Vercel Deploy
+
+If you import the outer `digital_heroes` folder, Vercel can use the root `vercel.json` and will build the nested `northpeak` app.
+
+If you import only the `northpeak` folder or set Vercel's Root Directory to `northpeak`, use these settings:
+
+```text
+Framework Preset: Vite
+Install Command: npm install
+Build Command: npm run build
+Output Directory: dist
+```
+
+Do not set the build command to `vite build` directly. Use `npm run build` so Vercel runs the local Vite binary installed from `package.json`.

@@ -1,0 +1,6 @@
+{
+  "framework": "vite",
+  "installCommand": "cd northpeak && npm install",
+  "buildCommand": "cd northpeak && npm run build",
+  "outputDirectory": "northpeak/dist"
+}
